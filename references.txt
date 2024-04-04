@@ -1,1 +1,8 @@
 Next.js - https://github.com/vercel/next-learn/tree/main/dashboard/final-example
+Prisma  - https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/mongodb-typescript-mongodb
+Mongodb-specific datatypes - https://www.prisma.io/dataguide/mongodb/mongodb-datatypes
+Modelling in Prisma - https://www.prisma.io/docs/orm/prisma-schema/data-model/relations 
+
+
+Todo - 
+1. Add support for editing question

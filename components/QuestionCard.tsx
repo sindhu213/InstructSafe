@@ -5,18 +5,19 @@ import { renderPublishedTime } from "@/lib/utils";
 import Link from "next/link";
 import { handleUpvotes } from "@/lib/actions";
 import { useState } from "react";
+import { Button } from "@/components";
 
 export default function QuestionCard({ params }: { params: QuestionType }) {
     const [upvotes, setUpvotes] = useState<number>(params.upvotes);
 
     const handleClick = async () => {
         try {
-          const updatedQuestion = await handleUpvotes(params);
-          setUpvotes(updatedQuestion.upvotes);
+            const updatedQuestion = await handleUpvotes(params);
+            setUpvotes(updatedQuestion.upvotes);
         } catch (error) {
-          console.error("Error upvoting:", error);
+            console.error("Error upvoting:", error);
         }
-    }
+    };
 
     return (
         <div className="border-solid px-3 w-1/2">
@@ -37,8 +38,21 @@ export default function QuestionCard({ params }: { params: QuestionType }) {
             </section>
 
             <section className="mb-4">
-                <Link href="/questions/answer">
-                    <button >Post an answer</button>
+                <Link
+                    href={{
+                        pathname: "/questions/answer",
+                        query: { title: params.title },
+                    }}
+                >
+                    <Button innerText="Post an answer" />
+                </Link>
+                <Link
+                    href={{
+                        pathname: "/questions/viewanswers",
+                        query: { title: params.title },
+                    }}
+                >
+                    <Button innerText="View Answers" />
                 </Link>
             </section>
         </div>

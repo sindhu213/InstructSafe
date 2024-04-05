@@ -5,7 +5,7 @@ import { QuestionType } from "@/lib/definitions";
 
 export default async function Page() {
     const questions: QuestionType[] = await fetchOpenQuestions();
-
+    
     return (
         <main>
             <h1 className="underline">Public questions</h1>

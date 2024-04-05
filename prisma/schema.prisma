@@ -27,22 +27,24 @@ model Question {
   upvotes     Int
   views       Int
   author      User?    @relation(fields: [authorID], references: [id])
-  authorID    String?  @unique @db.ObjectId
+  authorID    String?  @db.ObjectId
   tags        String[]
   setAlerts   String
   open        Boolean  @default(true)
+  Answer      Answer[]
 }
-
 
 model Answer {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  question    Question @relation(fields: [questionId], references: [id])
   answer      String
   publishedAt DateTime @default(now())
   upvotes     Int
+  setAlerts   String
   author      User?    @relation(fields: [authorID], references: [id])
-  authorID    String?  @unique @db.ObjectId
+  authorID    String?  @db.ObjectId
+  questionId  String   @db.ObjectId
 }
-
 
 model Notification {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId

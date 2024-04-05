@@ -15,3 +15,26 @@ export async function fetchOpenQuestions() {
         );
     }
 }
+
+export async function fetchAnswers({title}:{title:string}) {
+    try {
+        const answers = await db?.answer.findMany({
+            where: {
+                question: {
+                    title: title,
+                }
+            },
+            include: {
+                question: true,
+                author: true
+            }
+        });
+        return answers;
+    } catch (error) {
+        console.error(error);
+        throw new Error(
+            "Could not fetch answer right now. Please try again later. "
+        );
+    }
+}
+

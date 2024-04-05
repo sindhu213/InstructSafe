@@ -14,7 +14,9 @@ export type QuestionType = {
 
 export type AnswerType = {
     id: string,
+    title: QuestionType,
     answer: string,
     publishedAt: Date,
     upvotes: number,
+    setAlerts: string
 }

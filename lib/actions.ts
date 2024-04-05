@@ -24,8 +24,8 @@ export async function createQuestion(formdata: FormData){
         })
         const tags = tagsUnified.split(" ").map((element:String) => element.slice(1,));
         const upvotes = 0, views = 0;
-
-        const question = await db.question.create({
+        
+        const Question = await db.question.create({
             data: {
                 title,
                 description,
@@ -44,7 +44,39 @@ export async function createQuestion(formdata: FormData){
 }
 
 //CreateAnswer
-export async function createAnswer(formdata: FormData){}
+const CreateAnswer= z.object({
+    answer: z.string(),
+    setAlerts: z.enum(["on", "off"]),
+    title: z.string()
+})
+export async function createAnswer(formdata: FormData){
+    try{
+        const {answer, setAlerts,title} = CreateAnswer.parse({
+            answer: formdata.get('answer'),
+            setAlerts: formdata.get('alerts'),
+            title: formdata.get('title')
+        })
+        const upvotes = 0;
+        
+        const Answer = await db.answer.create({
+            data: {
+                answer,
+                setAlerts,
+                upvotes,
+                question : {
+                    connect: {
+                        title,
+                    }
+                }
+            }
+        }); 
+        revalidatePath('/questions/');
+        redirect('/questions');
+    } catch(error){
+        console.log("Error creating question. Please try again. ", error);
+        throw error;  
+    }
+}
 
 //Click-specific handling
 export async function handleUpvotes(params: QuestionType){

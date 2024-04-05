@@ -1,3 +1,4 @@
 import Button from "./Button";
+import QuestionCard from "./QuestionCard";
 
-export {Button}
+export {Button, QuestionCard}

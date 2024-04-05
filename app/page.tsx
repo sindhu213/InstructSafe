@@ -5,7 +5,7 @@ export default function Page() {
     return (
         <main>
             <Link href="/questions">
-                <Button param="Ask/Answer a question" />
+                <Button innerText="Ask/Answer a question" />
             </Link>
         </main>
     );

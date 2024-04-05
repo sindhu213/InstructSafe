@@ -23,11 +23,13 @@ model Question {
   title       String
   content     String
   publishedAt DateTime @default(now())
-  upvotes     Int
-  views       Int
+  upvotes     Int?
+  views       Int?
   author      User     @relation(fields: [authorID], references: [id])
   authorID    String   @unique @db.ObjectId
   tags        String[]
+  setAlerts   Boolean
+  open        Boolean @default(true)
 }
 
 model Notification {

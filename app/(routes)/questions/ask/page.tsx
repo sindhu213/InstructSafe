@@ -24,7 +24,7 @@ export default function Page() {
             <fieldset className="my-4">
                 <legend className="font-extrabold">Description</legend>
                 <label htmlFor="description">
-                    What are the details of your question (if any)?
+                    What are the details of your question?
                 </label>
                 <br />
                 <textarea

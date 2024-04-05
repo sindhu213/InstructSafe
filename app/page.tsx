@@ -1,9 +1,12 @@
-import { Button } from "@/components"
+import Link from "next/link";
+import { Button } from "@/components";
 
-export default function Page(){
-  return (
-    <main>
-      <Button/>
-    </main>
-  )
+export default function Page() {
+    return (
+        <main>
+            <Link href="/questions">
+                <Button param="Ask/Answer a question" />
+            </Link>
+        </main>
+    );
 }

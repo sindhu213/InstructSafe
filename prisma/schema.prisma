@@ -21,15 +21,15 @@ model User {
 model Question {
   id          String   @id @default(auto()) @map("_id") @db.ObjectId
   title       String
-  content     String
+  description String
   publishedAt DateTime @default(now())
   upvotes     Int?
   views       Int?
-  author      User     @relation(fields: [authorID], references: [id])
-  authorID    String   @unique @db.ObjectId
+  author      User?    @relation(fields: [authorID], references: [id])
+  authorID    String?  @unique @db.ObjectId
   tags        String[]
-  setAlerts   Boolean
-  open        Boolean @default(true)
+  setAlerts   String
+  open        Boolean  @default(true)
 }
 
 model Notification {

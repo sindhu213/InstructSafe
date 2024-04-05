@@ -1,12 +1,16 @@
-Doc reference - 
+Doc/Code reference - 
 Next.js - https://github.com/vercel/next-learn/tree/main/dashboard/final-example
 Prisma  - https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch/mongodb-typescript-mongodb
 Mongodb-specific datatypes - https://www.prisma.io/dataguide/mongodb/mongodb-datatypes
 Modelling in Prisma - https://www.prisma.io/docs/orm/prisma-schema/data-model/relations 
 Working with forms - https://nextjs.org/docs/pages/building-your-application/data-fetching/forms-and-mutations 
+Form validation - https://www.prisma.io/docs/orm/prisma-client/queries/custom-validation 
+CRUD Prisma - https://www.prisma.io/docs/orm/prisma-client/queries/crud#create
+
 
 UI reference - 
 1. Ask form - https://stackoverflow.com/questions/ask
+
 
 Todo - 
 1. Add support for editing question

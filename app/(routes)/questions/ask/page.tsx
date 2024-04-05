@@ -62,18 +62,18 @@ export default function Page() {
 
             <fieldset className="my-4">
                 <legend className="font-extrabold">Notification</legend>
-                <label htmlFor="">
+                <label htmlFor="notification">
                     Enable notifications for discussions regarding this
                     question.
                 </label>
                 <br />
                 <div>
-                    <input type="radio" id="yes" name="alerts" />
+                    <input type="radio" id="yes" name="alerts" value="on"/>
                     <label htmlFor="yes">Yes</label>
                 </div>
                 <div>
-                    <input type="radio" id="no" name="alerts" />
-                    <label htmlFor="No">No</label>
+                    <input type="radio" id="no" name="alerts" value="off"/>
+                    <label htmlFor="no">No</label>
                 </div>
             </fieldset>
 

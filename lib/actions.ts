@@ -4,7 +4,7 @@ import {z} from 'zod';
 import { db } from '@/lib/prismadb';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { QuestionType, AnswerType } from '@/lib/definitions';
+import { QuestionType } from '@/lib/definitions';
 
 //CreateQuestion
 const CreateQuestion= z.object({
@@ -23,7 +23,7 @@ export async function createQuestion(formdata: FormData){
             setAlerts: formdata.get('alerts')
         })
         const tags = tagsUnified.split(" ").map((element:String) => element.slice(1,));
-        const upvotes = 0, views = 0, answers:AnswerType[] = [];
+        const upvotes = 0, views = 0;
 
         const Question = await db.question.create({
             data: {
@@ -33,7 +33,6 @@ export async function createQuestion(formdata: FormData){
                 setAlerts,
                 upvotes, 
                 views,
-                answers
             }
         }); 
         revalidatePath('/questions/');
@@ -44,40 +43,48 @@ export async function createQuestion(formdata: FormData){
     }
 }
 
-//CreateAnswer
-const CreateAnswer= z.object({
-    answer: z.string(),
-    setAlerts: z.enum(["on", "off"]),
-    title: z.string()
-})
-export async function createAnswer(formdata: FormData){
-    try{
-        const {answer, setAlerts,title} = CreateAnswer.parse({
-            answer: formdata.get('answer'),
-            setAlerts: formdata.get('alerts'),
-            title: formdata.get('title')
-        })
-        const upvotes = 0;
+    //CreateAnswer
+    const CreateAnswer= z.object({
+        answer: z.string(),
+        setAlerts: z.enum(["on", "off"]),
+        title: z.string()
+    })
 
-        const Answer = await db.answer.create({
-            data: {
-                answer,
-                setAlerts,
-                upvotes,
-                question : {
-                    connect: {
-                        title,
+    export async function createAnswer(formdata: FormData){
+        try{
+            const {answer, setAlerts,title} = CreateAnswer.parse({
+                answer: formdata.get('answer'),
+                setAlerts: formdata.get('alerts'),
+                title: formdata.get('title')
+            })
+
+            const upvotes = 0;
+
+            const question = await db.question.findFirst({
+                where: {
+                    title
+                }
+            })
+
+            const Answer = await db.answer.create({
+                data: {
+                    answer,
+                    setAlerts,
+                    upvotes,
+                    question : {
+                        connect: {
+                            id: question?.id,
+                        }
                     }
                 }
-            }
-        }); 
-        revalidatePath('/questions/');
-        redirect('/questions');
-    } catch(error){
-        console.log("Error creating question. Please try again. ", error);
-        throw error;  
+            }); 
+            revalidatePath('/questions/');
+            redirect('/questions');
+        } catch(error){
+            console.log("Error creating question. Please try again. ", error);
+            throw error;  
+        }
     }
-}
 
 //Click-specific handling
 export async function handleUpvotes(params: QuestionType){

@@ -7,10 +7,8 @@ Working with forms - https://nextjs.org/docs/pages/building-your-application/dat
 Form validation - https://www.prisma.io/docs/orm/prisma-client/queries/custom-validation 
 CRUD Prisma - https://www.prisma.io/docs/orm/prisma-client/queries/crud#create
 
-
-UI reference - 
-1. Ask form - https://stackoverflow.com/questions/ask
-
+Hack - 
+1. Removed author field from both question and answer in definitions.ts
 
 Todo - 
 1. Add support for editing question

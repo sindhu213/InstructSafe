@@ -14,7 +14,7 @@ export default function Page() {
                 <fieldset className="my-4">
                     <legend className="font-extrabold">Question</legend>
                     <label htmlFor="title">{title}</label>
-                    <input type="hidden" name="title" value="title" />
+                    <input type="hidden" name="title" value={title as string} />
                     <br />
                 </fieldset>
 

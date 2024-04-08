@@ -1,11 +1,16 @@
 "use client";
-
+import { AnswerCard } from "@/components";
 import { useSearchParams } from "next/navigation";
-import { fetchAnswers } from "@/lib/data";
-import { AnswerType } from "@/lib/definitions";
+import { TitleContext } from "@/lib/providers";
+
 
 export default function Page(){
     const searchParams = useSearchParams();
-    const title = searchParams.get('title');
-    // const answers:AnswerType = await fetchAnswers({title});
+    const title = searchParams.get('title') ?? " ";
+    
+    return (
+        <TitleContext.Provider value={title}>
+            <AnswerCard />
+        </TitleContext.Provider>
+    )
 }

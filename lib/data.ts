@@ -16,7 +16,7 @@ export async function fetchOpenQuestions() {
     }
 }
 
-export async function fetchAnswers({title}:{title:string}) {
+export async function fetchAnswers(title:string) {
     try {
         const answers = await db?.answer.findMany({
             where: {
@@ -26,7 +26,6 @@ export async function fetchAnswers({title}:{title:string}) {
             },
             include: {
                 question: true,
-                author: true
             }
         });
         return answers;

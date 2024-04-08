@@ -31,7 +31,7 @@ model Question {
   tags        String[]
   setAlerts   String
   open        Boolean  @default(true)
-  Answer      Answer[]
+  answers     Answer[]
 }
 
 model Answer {

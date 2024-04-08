@@ -9,14 +9,28 @@ export type QuestionType = {
     views: number, 
     tags: string[],
     setAlerts: string 
-    open: boolean
+    open: boolean,
+    authorID: string | null,
+}
+
+export type User = {
+    id: string, 
+    username: string,
+    email: string, 
+    emailVerified: Date | null,
+    hashedPassword: string,
+    createdAt: Date,
+    questions: QuestionType,
+    answers: AnswerType
 }
 
 export type AnswerType = {
     id: string,
-    title: QuestionType,
+    question: QuestionType,
     answer: string,
     publishedAt: Date,
     upvotes: number,
-    setAlerts: string
+    setAlerts: string,
+    authorID: string | null,
+    questionId: string
 }

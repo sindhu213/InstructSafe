@@ -40,7 +40,7 @@ export default function QuestionCard({ params }: { params: QuestionType }) {
             <section className="mb-4">
                 <Link
                     href={{
-                        pathname: "/questions/answer",
+                        pathname: "/questions/answer/post",
                         query: { title: params.title },
                     }}
                 >
@@ -48,7 +48,7 @@ export default function QuestionCard({ params }: { params: QuestionType }) {
                 </Link>
                 <Link
                     href={{
-                        pathname: "/questions/viewanswers",
+                        pathname: "/questions/answer/get",
                         query: { title: params.title },
                     }}
                 >

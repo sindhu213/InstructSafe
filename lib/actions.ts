@@ -23,8 +23,8 @@ export async function createQuestion(formdata: FormData){
             setAlerts: formdata.get('alerts')
         })
         const tags = tagsUnified.split(" ").map((element:String) => element.slice(1,));
-        const upvotes = 0, views = 0;
-        
+        const upvotes = 0, views = 0, answers:AnswerType[] = [];
+
         const Question = await db.question.create({
             data: {
                 title,
@@ -32,7 +32,8 @@ export async function createQuestion(formdata: FormData){
                 tags,
                 setAlerts,
                 upvotes, 
-                views
+                views,
+                answers
             }
         }); 
         revalidatePath('/questions/');
@@ -57,7 +58,7 @@ export async function createAnswer(formdata: FormData){
             title: formdata.get('title')
         })
         const upvotes = 0;
-        
+
         const Answer = await db.answer.create({
             data: {
                 answer,

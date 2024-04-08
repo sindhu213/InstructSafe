@@ -1,34 +1,25 @@
-"use client";
-
 import { fetchAnswers } from "@/lib/data";
-import { useContext, useEffect, useState } from "react";
-import { TitleContext } from "@/lib/providers";
-import { AnswerType } from "@/lib/definitions";
+import { renderPublishedTime } from "@/lib/utils";
 
-export default function AnswerCard() {
-    const title = useContext(TitleContext);
-    const [answers, setAnswers] = useState<AnswerType[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetchAnswers(title);
-                setAnswers(response);
-            } catch (error) {
-                console.log(error);
-                throw new Error("Could not fetch answers right now. Please try again later. ");
-            }
-        };
-        if (title) {
-            fetchData();
-        }
-    }, [title]);
-
+export default async function AnswerCard({ title }: { title: string }) {
+    const answers = await fetchAnswers(title);
     return (
         <section>
             <div>
+                <h1 className="underline mb-0 text-rose-600">{title}</h1>
                 {answers.map((answer) => (
-                    <p key={answer.id}>{answer.answer}</p>
+                    <section
+                        key={answer.id}
+                        className="border-solid p-5 w-1/2 m-3"
+                    >
+                        <p className="text-lg">{answer.answer}</p>
+                        <section className="flex text-sm font-semibold justify-between">
+                            <p>
+                                Published at:{" "}
+                                {renderPublishedTime(answer.publishedAt)}
+                            </p>
+                        </section>
+                    </section>
                 ))}
             </div>
         </section>

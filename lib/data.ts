@@ -24,9 +24,6 @@ export async function fetchAnswers(title:string) {
                     title: title,
                 }
             },
-            include: {
-                question: true,
-            }
         });
         return answers;
     } catch (error) {

@@ -7,6 +7,9 @@ export default function Page() {
             <Link href="/questions">
                 <Button innerText="Ask/Answer a question" />
             </Link>
+            <Link href="/notification">
+                <Button innerText="View notifications"/> 
+            </Link>
         </main>
     );
 }

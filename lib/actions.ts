@@ -1,29 +1,42 @@
 // Server actions
 "use server";
-import {z} from 'zod';
-import { db } from '@/lib/prismadb';
-import { redirect } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
-import { QuestionType } from '@/lib/definitions';
+import { z } from "zod";
+import { db } from "@/lib/prismadb";
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
+import { QuestionType } from "@/lib/definitions";
 
 //CreateQuestion
-const CreateQuestion= z.object({
-    title: z.string(), 
+const CreateQuestion = z.object({
+    title: z.string(),
     description: z.string(),
-    tagsUnified: z.string(), 
-    setAlerts: z.enum(["on", "off"])
-})
+    tagsUnified: z.string(),
+    setAlerts: z.enum(["on", "off"]),
+});
 
-export async function createQuestion(formdata: FormData){
-    try{
-        const {title, description, tagsUnified, setAlerts} = CreateQuestion.parse({
-            title: formdata.get('title'),
-            description: formdata.get('description'),
-            tagsUnified: formdata.get('tags'),
-            setAlerts: formdata.get('alerts')
-        })
-        const tags = tagsUnified.split(" ").map((element:String) => element.slice(1,));
-        const upvotes = 0, views = 0;
+export async function createQuestion(formdata: FormData) {
+    try {
+        const { title, description, tagsUnified, setAlerts } =
+            CreateQuestion.parse({
+                title: formdata.get("title"),
+                description: formdata.get("description"),
+                tagsUnified: formdata.get("tags"),
+                setAlerts: formdata.get("alerts"),
+            });
+        const tags = tagsUnified
+            .split(" ")
+            .map((element: String) => element.slice(1));
+        const upvotes = 0,
+            views = 0;
+
+        if (setAlerts == "on") {
+            const Notification = await db.notification.create({
+                data: {
+                    content: description,
+                    type:"QUESTION"
+                }
+            })
+        }
 
         const Question = await db.question.create({
             data: {
@@ -31,67 +44,76 @@ export async function createQuestion(formdata: FormData){
                 description,
                 tags,
                 setAlerts,
-                upvotes, 
+                upvotes,
                 views,
-            }
-        }); 
-        revalidatePath('/questions/');
-        redirect('/questions');
-    } catch(error){
+            },
+        });
+        revalidatePath("/questions/");
+        redirect("/questions");
+    } catch (error) {
         console.log("Error creating question. Please try again. ", error);
-        throw error;  
+        throw error;
     }
 }
 
-    //CreateAnswer
-    const CreateAnswer= z.object({
-        answer: z.string(),
-        setAlerts: z.enum(["on", "off"]),
-        title: z.string()
-    })
+//CreateAnswer
+const CreateAnswer = z.object({
+    answer: z.string(),
+    setAlerts: z.enum(["on", "off"]),
+    title: z.string(),
+});
 
-    export async function createAnswer(formdata: FormData){
-        try{
-            const {answer, setAlerts,title} = CreateAnswer.parse({
-                answer: formdata.get('answer'),
-                setAlerts: formdata.get('alerts'),
-                title: formdata.get('title')
-            })
+export async function createAnswer(formdata: FormData) {
+    try {
+        const { answer, setAlerts, title } = CreateAnswer.parse({
+            answer: formdata.get("answer"),
+            setAlerts: formdata.get("alerts"),
+            title: formdata.get("title"),
+        });
 
-            const upvotes = 0;
+        const upvotes = 0;
 
-            const question = await db.question.findFirst({
-                where: {
-                    title
-                }
-            })
+        const question = await db.question.findFirst({
+            where: {
+                title,
+            },
+        });
 
-            const Answer = await db.answer.create({
+        if(setAlerts == "on"){
+            const Notification = await db.notification.create({
                 data: {
-                    answer,
-                    setAlerts,
-                    upvotes,
-                    question : {
-                        connect: {
-                            id: question?.id,
-                        }
-                    }
+                    content: answer,
+                    type: "ANSWER",
                 }
-            }); 
-            revalidatePath('/questions/');
-            redirect('/questions');
-        } catch(error){
-            console.log("Error creating question. Please try again. ", error);
-            throw error;  
+            })
         }
+
+        const Answer = await db.answer.create({
+            data: {
+                answer,
+                setAlerts,
+                upvotes,
+                question: {
+                    connect: {
+                        id: question?.id,
+                    },
+                },
+            },
+        });
+        revalidatePath("/questions/");
+        redirect("/questions");
+    } catch (error) {
+        console.log("Error creating question. Please try again. ", error);
+        throw error;
     }
+}
 
 //Click-specific handling
-export async function handleUpvotes(params: QuestionType){
-    try{
+export async function handleUpvotes(params: QuestionType) {
+    try {
         const question = await db.question.findUnique({
-            where : {
-                id : params.id,
+            where: {
+                id: params.id,
             },
         });
 
@@ -100,16 +122,16 @@ export async function handleUpvotes(params: QuestionType){
         }
 
         const updatedQuestion = await db.question.update({
-            where : {
-                id : params.id,
+            where: {
+                id: params.id,
             },
             data: {
                 upvotes: question.upvotes + 1,
-            }
+            },
         });
 
         return updatedQuestion;
-    } catch(error){
+    } catch (error) {
         console.error(error);
         throw new Error("Error updating the upvotes. Please try again later.");
     }

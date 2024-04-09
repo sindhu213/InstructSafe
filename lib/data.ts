@@ -34,3 +34,4 @@ export async function fetchAnswers(title:string) {
     }
 }
 
+export async function fetchNotifications(){}

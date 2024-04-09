@@ -50,7 +50,13 @@ model Notification {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   content   String
   createdAt DateTime @default(now())
-  author    User     @relation(fields: [userId], references: [id])
-  userId    String   @unique @db.ObjectId
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  String?  @db.ObjectId
   seen      Boolean  @default(false)
+  type      Type
+}
+
+enum Type {
+  ANSWER
+  QUESTION
 }
